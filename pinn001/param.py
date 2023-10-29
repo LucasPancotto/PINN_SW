@@ -1,0 +1,15 @@
+N = 1024
+tsteps = 11
+sample_prob = 0.5
+dt = 1e-4
+layers = 4
+hu = 100
+mbsize = 10000
+lr = 1e-4
+depochs = 0
+drate = 0.9
+P = 0.05538928 # calculated from gauss_topo011
+sig_p = 0.12851174 # calculated from gauss_topo011
+nu = 0
+g = 2
+epochs = 1000
