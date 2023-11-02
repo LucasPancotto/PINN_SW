@@ -82,8 +82,6 @@ class PhysicsInformedNN:
     restore : bool [optional]
         If True, it checks if a checkpoint exists in dest. If a checkpoint
         exists it restores the modelfrom there. Default is True.
-    relu_layer: bool [optional]
-        If True, adds Relu activation function layer before outputs. Default is False.
     """
     # Initialize the class
     def __init__(self,
@@ -100,8 +98,7 @@ class PhysicsInformedNN:
                  inverse=False,
                  aux_model=None,
                  aux_coords=None,
-                 restore=True,
-                 relu_layer = False):
+                 restore=True):
 
         # Numbers and dimensions
         self.din  = layers[0]
@@ -165,8 +162,6 @@ class PhysicsInformedNN:
                                                                   tf.sqrt(6.0/width)/omega0)
             if activation=='adaptive_layer':
                 self.act_fn = AdaptiveAct()
-            if relu_layer  and (ii == depth-1) and not first_layer: # add a RELU layer before outputs
-                self.act_fn = keras.activations.relu
             new_layer   = self.act_fn(new_layer)
             if p_drop:
                 new_layer = keras.layers.Dropout(p_drop)(new_layer)

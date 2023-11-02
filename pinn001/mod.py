@@ -28,8 +28,8 @@ def generate_data(params, path):
             for jj in range(len(xx)):
                 if np.random.rand()>params.sample_prob:
                     coords.append([tt[jj], xx[jj], yy[jj]])
-                    fields.append([vv[0][jj], vv[1][jj], vv[2][jj], vv[2][jj]]) # repeat vv[2][jj] so as to pad... we do not have hb filed
-                    flags.append(y_flags[jj])
+                    fields.append([vv[0][jj], vv[1][jj], vv[2][jj] - params.h0, vv[2][jj] - params.h0]) # repeat vv[2][jj] so as to pad... we do not have hb filed
+                    flags.append(y_flags[jj])                   # h - h0
 
         coords = np.array(coords).astype(np.float32)
         fields = np.array(fields).astype(np.float32)
@@ -73,8 +73,10 @@ def cte_validation(self, params, path, tidx):
 
         np.save("predicted.npy",[u_p, v_p, th_p, hb_p]) # Predicted fields in predicted.npy
         pinn = np.array([u_p, v_p, th_p]) # do not include hb_p here, because it is used for validating against simulation
-        ref = np.array([abrirbin(f'{path}/{comp}.{tidx+1:03}.out', params.N)
-                       for comp in ['vx', 'vy', 'th']])
+        ref = [abrirbin(f'{path}/{comp}.{tidx+1:03}.out', params.N)
+                       for comp in ['vx', 'vy', 'th']]
+        ref[-1] = ref[-1] - params.h0 # h - h0
+        ref = np.array(ref)
         err  = [np.sqrt(np.mean((ref[ff]-pinn[ff])**2))/np.std(ref[ff]) for ff in range(3)]
 
         # Loss functions

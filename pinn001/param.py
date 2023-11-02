@@ -12,4 +12,5 @@ P = 0.05538928 # calculated from gauss_topo011
 sig_p = 0.12851174 # calculated from gauss_topo011
 nu = 0
 g = 2
+h0 = 2
 epochs = 1000
